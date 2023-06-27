@@ -1,6 +1,5 @@
 import React from "react";
-import { Container, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 const Home = () => {
   return <Container></Container>;

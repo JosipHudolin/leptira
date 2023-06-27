@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { updatePassword } from "firebase/auth";
 import { UserContext } from "../contexts/UserContext";

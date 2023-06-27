@@ -42,7 +42,7 @@ const MyBook = (props) => {
   const { setGlobalError } = useContext(GlobalErrorContext);
 
   useEffect(() => {
-    async () => {
+    (async () => {
       if (!user) return;
       const bookRef = doc(db, "book", props.id);
       const bookSnap = await getDoc(bookRef);
@@ -62,8 +62,8 @@ const MyBook = (props) => {
       setSummary(bookData.summary);
       setQuotes(bookData.quotes);
       setConclusion(bookData.conclusion);
-    };
-  });
+    })();
+  }, []);
 
   const HandleSave = async (e) => {
     e.preventDeafault();
@@ -305,7 +305,7 @@ const MyBook = (props) => {
           className="mt-3 mb-5"
           variant="primary"
           type="submit"
-          onClick={HandlePDF}
+          onClick={() => console.log("BOK")}
         >
           Izvezi u PDF
         </Button>
