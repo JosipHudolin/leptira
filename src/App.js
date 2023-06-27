@@ -18,14 +18,14 @@ const App = () => {
         <BrowserRouter>
           <Navbar />
           <GlobalError />
-          <Redirect>
+          <Redirect disabled>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/newbook" element={<NewBook />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/mybook" element={<MyBook />} />
+              <Route path="/mybook/:bookId" element={<MyBook />} />
             </Routes>
           </Redirect>
         </BrowserRouter>
