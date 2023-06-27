@@ -63,7 +63,7 @@ const MyBook = (props) => {
       setQuotes(bookData.quotes);
       setConclusion(bookData.conclusion);
     })();
-  }, []);
+  }, [user, props]);
 
   const HandleSave = async (e) => {
     e.preventDeafault();
@@ -109,7 +109,7 @@ const MyBook = (props) => {
 
   return (
     <Container>
-      <h1 className="mt-5 mb-3"></h1>
+      <h1 className="mt-5 mb-3">Naslov</h1>
       <Form>
         <InputGroup className="mb-3">
           <InputGroup.Text id="inputGroup-sizing-default">
