@@ -5,8 +5,13 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../config";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
 import { periods } from "../data/periods";
+import { useNavigate, useParams } from "react-router-dom";
 
-const MyBook = (props) => {
+const MyBook = () => {
+  const navigate = useNavigate();
+
+  const { bookId } = useParams();
+
   const [bookName, setBookName] = useState("");
 
   const [author, setAuthor] = useState("");
@@ -44,29 +49,34 @@ const MyBook = (props) => {
   useEffect(() => {
     (async () => {
       if (!user) return;
-      const bookRef = doc(db, "book", props.id);
-      const bookSnap = await getDoc(bookRef);
-      const bookData = bookSnap.data();
-      setBookName(bookData.bookName);
-      setAuthor(bookData.author);
-      setAuthorNote(bookData.authorNote);
-      setYear(bookData.year);
-      setPeriod(bookData.period);
-      setLanguage(bookData.language);
-      setMainCharacter(bookData.mainCharacter);
-      setCharacters(bookData.characters);
-      setPlace(bookData.place);
-      setTime(bookData.time);
-      setTheme(bookData.theme);
-      setIdea(bookData.idea);
-      setSummary(bookData.summary);
-      setQuotes(bookData.quotes);
-      setConclusion(bookData.conclusion);
+      try {
+        const bookRef = doc(db, "book", bookId);
+        const bookSnap = await getDoc(bookRef);
+        const bookData = bookSnap.data();
+        if (bookData.user !== user.uid) navigate("/");
+        setBookName(bookData.bookName);
+        setAuthor(bookData.author);
+        setAuthorNote(bookData.authorNote);
+        setYear(bookData.year);
+        setPeriod(bookData.period);
+        setLanguage(bookData.language);
+        setMainCharacter(bookData.mainCharacter);
+        setCharacters(bookData.characters);
+        setPlace(bookData.place);
+        setTime(bookData.time);
+        setTheme(bookData.theme);
+        setIdea(bookData.idea);
+        setSummary(bookData.summary);
+        setQuotes(bookData.quotes);
+        setConclusion(bookData.conclusion);
+      } catch (error) {
+        console.log(error);
+      }
     })();
-  }, [user, props]);
+  }, [user]);
 
-  const HandleSave = async (e) => {
-    e.preventDeafault();
+  const handleSave = async (e) => {
+    e.preventDefault();
     try {
       const bookFinal = {
         bookName,
@@ -86,7 +96,7 @@ const MyBook = (props) => {
         conclusion,
         user: user.uid,
       };
-      const bookRef = doc(db, "book", props.id);
+      const bookRef = doc(db, "book", bookId);
       await updateDoc(bookRef, bookFinal);
     } catch (error) {
       setGlobalError(error.message);
@@ -296,7 +306,7 @@ const MyBook = (props) => {
           className="mt-3 mb-5"
           variant="primary"
           type="submit"
-          onClick={HandleSave}
+          onClick={handleSave}
         >
           Spremi izmjene
         </Button>

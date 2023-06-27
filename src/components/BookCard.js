@@ -10,7 +10,7 @@ const BookCard = (props) => {
           {props.author}
         </Card.Subtitle>
         <Card.Text>{props.theme}</Card.Text>
-        <Card.Link href="#">Pregledaj</Card.Link>
+        <Card.Link href={"mybook/" + props.id}>Pregledaj</Card.Link>
         <Card.Link href="#">PDF</Card.Link>
       </Card.Body>
     </Card>

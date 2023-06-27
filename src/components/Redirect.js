@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Redirect = ({ children }) => {
+const Redirect = ({ children, disabled = false }) => {
   const allowedRoutes = ["/login", "/register"];
 
   const user = useContext(UserContext);
@@ -13,6 +13,8 @@ const Redirect = ({ children }) => {
   const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
+    if (disabled) return;
+
     if (firstLoad) {
       setFirstLoad(false);
       return;
