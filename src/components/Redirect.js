@@ -20,6 +20,7 @@ const Redirect = ({ children, disabled = false }) => {
       return;
     }
     if (!user && !allowedRoutes.includes(location.pathname)) navigate("/login");
+    // eslint-disable-next-line
   }, [user, firstLoad, location]);
 
   return <>{children}</>;

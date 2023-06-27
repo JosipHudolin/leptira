@@ -73,6 +73,7 @@ const MyBook = () => {
         console.log(error);
       }
     })();
+    // eslint-disable-next-line
   }, [user]);
 
   const handleSave = async (e) => {
