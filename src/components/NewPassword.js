@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import { updatePassword } from "firebase/auth";
 import { UserContext } from "../contexts/UserContext";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
