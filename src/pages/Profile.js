@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, Card, InputGroup, Form, Button } from "react-bootstrap";
 import { data as fakeData } from "../data/books";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../config";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../config";
 import { UserContext } from "../contexts/UserContext";
-import { getAuth, updateEmail, updatePassword } from "firebase/auth";
+import { getAuth, updateEmail } from "firebase/auth";
+import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
 
 const Profile = () => {
+  const { setGlobalError } = useContext(GlobalErrorContext);
+
   const [data, setData] = useState({});
 
   const [name, setName] = useState("");
@@ -16,8 +19,6 @@ const Profile = () => {
   const [grade, setGrade] = useState();
 
   const [email, setEmail] = useState("");
-
-  const [password, setPassword] = useState("");
 
   const user = useContext(UserContext);
 
@@ -51,15 +52,17 @@ const Profile = () => {
   const handleClick = async (e) => {
     if (editable) {
       if (!user) return;
-      const userRef = doc(db, "user", user.uid);
-      await updateDoc(userRef, {
-        grade,
-        name,
-        surname,
-      });
-      updateEmail(auth.currentUser, email)
-        .then(() => {})
-        .catch((error) => {});
+      try {
+        const userRef = doc(db, "user", user.uid);
+        await updateDoc(userRef, {
+          grade,
+          name,
+          surname,
+        });
+        await updateEmail(auth.currentUser, email);
+      } catch (error) {
+        setGlobalError(error.message);
+      }
     }
 
     setEditable(!editable);

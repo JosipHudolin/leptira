@@ -74,7 +74,7 @@ const Login = () => {
         <p>
           Nemaš račun? <Link to="/register">REGISTRIRAJ SE!</Link>
         </p>
-        <Link onClick={() => setModalOpen(true)}>Zaboravio sam lozinku!</Link>
+        <Link onClick={() => setModalOpen(true)}>Zaboravili ste lozinku?</Link>
         <Button className="mx-auto" variant="primary" type="submit">
           Prijavi se
         </Button>
