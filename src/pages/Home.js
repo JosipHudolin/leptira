@@ -4,6 +4,7 @@ import { UserContext } from "../contexts/UserContext";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config";
 import BookCard from "../components/BookCard";
+import { getAllBooks } from "../server";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -29,6 +30,13 @@ const Home = () => {
       }
     })();
   }, [user]);
+
+  useEffect(() => {
+    (async () => {
+      const books = await getAllBooks();
+      console.log(books);
+    })();
+  }, []);
 
   return (
     <Container>

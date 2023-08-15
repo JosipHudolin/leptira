@@ -34,7 +34,6 @@ const Profile = () => {
       const userRef = doc(db, "user", user.uid);
       const userSnap = await getDoc(userRef);
       const userData = userSnap.data();
-      console.log(userData);
       setName(userData.name);
       setSurname(userData.surname);
       setGrade(userData.grade);

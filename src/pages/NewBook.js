@@ -6,6 +6,7 @@ import { UserContext } from "../contexts/UserContext";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
+import { getGradeBooks, getAllBooks, getAllPeriods } from "../server";
 
 const NewBook = () => {
   const [data, setData] = useState({});
@@ -15,6 +16,20 @@ const NewBook = () => {
   const user = useContext(UserContext);
 
   const { setGlobalError } = useContext(GlobalErrorContext);
+
+  useEffect(() => {
+    (async () => {
+      const periods = await getAllPeriods();
+      console.log(periods);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getGradeBooks(grade);
+      const gradeBooks = JSON.parse(data);
+    })();
+  }, [grade]);
 
   useEffect(() => {
     (async () => {
@@ -155,13 +170,11 @@ const NewBook = () => {
           disabled={!Object.keys(data).includes(grade)}
         >
           <option>Odaberi djelo</option>
-          {data &&
-            data[grade] &&
-            data[grade].map((book) => (
-              <option value={book.name} key={book.name}>
-                {book.name}, {book.author}
-              </option>
-            ))}
+          {gradeBooks.map((book) => (
+            <option value={book.name} key={book.name}>
+              {book.name}, {book.author}
+            </option>
+          ))}
           <option value="ostalo">Ostalo</option>
         </Form.Select>
 
