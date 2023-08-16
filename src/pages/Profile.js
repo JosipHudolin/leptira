@@ -39,7 +39,7 @@ const Profile = () => {
       setGrade(userData.grade);
       setEmail(auth.currentUser.email);
     })();
-  }, [user]);
+  }, [user, auth.currentUser.email]);
 
   useEffect(() => {
     if (!error) return;

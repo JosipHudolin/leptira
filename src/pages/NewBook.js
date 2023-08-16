@@ -1,73 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, InputGroup, Form, Button } from "react-bootstrap";
 import { data as fakeData } from "../data/books";
-import { periods } from "../data/periods";
+// import { periods } from "../data/periods";
 import { UserContext } from "../contexts/UserContext";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
-import { getGradeBooks, getAllBooks, getAllPeriods } from "../server";
+import { getGradeBooks, getAllPeriods } from "../server";
 
 const NewBook = () => {
   const [data, setData] = useState({});
 
   const [grade, setGrade] = useState(0);
 
-  const user = useContext(UserContext);
-
-  const { setGlobalError } = useContext(GlobalErrorContext);
-
-  useEffect(() => {
-    (async () => {
-      const periods = await getAllPeriods();
-      console.log(periods);
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const data = await getGradeBooks(grade);
-      const gradeBooks = JSON.parse(data);
-    })();
-  }, [grade]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!user) return;
-        const userRef = doc(db, "user", user.uid);
-        const userSnap = await getDoc(userRef);
-        const userData = userSnap.data();
-        setGrade(userData.grade);
-      } catch (error) {
-        setGlobalError(error.message);
-      }
-    })();
-  }, [user]);
-
-  useEffect(() => {
-    setData(fakeData);
-  }, []);
-
-  const [book, setBook] = useState({});
-
-  const [disableFields, setDisableFields] = useState(true);
-
-  useEffect(() => {
-    if (book === "ostalo") {
-      setDisableFields(false);
-      setBookName("");
-      setAuthor("");
-    } else if (book !== "") {
-      setDisableFields(true);
-      const filteredData =
-        data &&
-        data[grade] &&
-        data[grade].filter((item) => item.name === book)[0];
-      setBookName(filteredData?.name || "");
-      setAuthor(filteredData?.author || "");
-    }
-  }, [book]);
+  const [gradeBooks, setGradeBooks] = useState([]);
 
   const [bookName, setBookName] = useState("");
 
@@ -98,6 +44,67 @@ const NewBook = () => {
   const [quotes, setQuotes] = useState("");
 
   const [conclusion, setConclusion] = useState("");
+
+  const [periods, setPeriods] = useState([]);
+
+  const user = useContext(UserContext);
+
+  const { setGlobalError } = useContext(GlobalErrorContext);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getAllPeriods();
+      setPeriods(data);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (grade === 0) return;
+
+    (async () => {
+      const data = await getGradeBooks(grade);
+      setGradeBooks(data)
+    })();
+  }, [grade]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!user) return;
+        const userRef = doc(db, "user", user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        setGrade(userData.grade);
+      } catch (error) {
+        setGlobalError(error.message);
+      }
+    })();
+  }, [user, setGlobalError]);
+
+  useEffect(() => {
+    setData(fakeData);
+  }, []);
+
+  const [book, setBook] = useState({});
+
+  const [disableFields, setDisableFields] = useState(true);
+
+  useEffect(() => {
+    if (book === "ostalo") {
+      setDisableFields(false);
+      setBookName("");
+      setAuthor("");
+    } else if (book !== "") {
+      setDisableFields(true);
+      const filteredData =
+        data &&
+        data[grade] &&
+        data[grade].filter((item) => item.name === book)[0];
+      setBookName(filteredData?.name || "");
+      setAuthor(filteredData?.author || "");
+    }
+  }, [book, data, grade]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,7 +178,7 @@ const NewBook = () => {
         >
           <option>Odaberi djelo</option>
           {gradeBooks.map((book) => (
-            <option value={book.name} key={book.name}>
+            <option value={book.name} key={book.name + book.author}>
               {book.name}, {book.author}
             </option>
           ))}
