@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, InputGroup, Form, Button } from "react-bootstrap";
 import { data as fakeData } from "../data/books";
-import { periods } from "../data/periods";
+// import { periods } from "../data/periods";
 import { UserContext } from "../contexts/UserContext";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
@@ -13,21 +13,57 @@ const NewBook = () => {
 
   const [grade, setGrade] = useState(0);
 
+  const [gradeBooks, setGradeBooks] = useState([]);
+
+  const [bookName, setBookName] = useState("");
+
+  const [author, setAuthor] = useState("");
+
+  const [authorNote, setAuthorNote] = useState("");
+
+  const [year, setYear] = useState("");
+
+  const [period, setPeriod] = useState("");
+
+  const [language, setLanguage] = useState("");
+
+  const [mainCharacter, setMainCharacter] = useState("");
+
+  const [characters, setCharacters] = useState("");
+
+  const [place, setPlace] = useState("");
+
+  const [time, setTime] = useState("");
+
+  const [theme, setTheme] = useState("");
+
+  const [idea, setIdea] = useState("");
+
+  const [summary, setSummary] = useState("");
+
+  const [quotes, setQuotes] = useState("");
+
+  const [conclusion, setConclusion] = useState("");
+
+  const [periods, setPeriods] = useState([]);
+
   const user = useContext(UserContext);
 
   const { setGlobalError } = useContext(GlobalErrorContext);
 
   useEffect(() => {
     (async () => {
-      const periods = await getAllPeriods();
-      console.log(periods);
+      const data = await getAllPeriods();
+      setPeriods(data);
     })();
   }, []);
 
   useEffect(() => {
+    if (grade === 0) return;
+
     (async () => {
       const data = await getGradeBooks(grade);
-      const gradeBooks = JSON.parse(data);
+      setGradeBooks(data)
     })();
   }, [grade]);
 
@@ -67,37 +103,8 @@ const NewBook = () => {
       setBookName(filteredData?.name || "");
       setAuthor(filteredData?.author || "");
     }
-  }, [book]);
+  }, [book, data, grade]);
 
-  const [bookName, setBookName] = useState("");
-
-  const [author, setAuthor] = useState("");
-
-  const [authorNote, setAuthorNote] = useState("");
-
-  const [year, setYear] = useState("");
-
-  const [period, setPeriod] = useState("");
-
-  const [language, setLanguage] = useState("");
-
-  const [mainCharacter, setMainCharacter] = useState("");
-
-  const [characters, setCharacters] = useState("");
-
-  const [place, setPlace] = useState("");
-
-  const [time, setTime] = useState("");
-
-  const [theme, setTheme] = useState("");
-
-  const [idea, setIdea] = useState("");
-
-  const [summary, setSummary] = useState("");
-
-  const [quotes, setQuotes] = useState("");
-
-  const [conclusion, setConclusion] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,7 +178,7 @@ const NewBook = () => {
         >
           <option>Odaberi djelo</option>
           {gradeBooks.map((book) => (
-            <option value={book.name} key={book.name}>
+            <option value={book.name} key={book.name + book.author}>
               {book.name}, {book.author}
             </option>
           ))}
