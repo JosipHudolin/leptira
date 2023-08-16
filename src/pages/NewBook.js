@@ -6,7 +6,7 @@ import { UserContext } from "../contexts/UserContext";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
-import { getGradeBooks, getAllBooks, getAllPeriods } from "../server";
+import { getGradeBooks, getAllPeriods } from "../server";
 
 const NewBook = () => {
   const [data, setData] = useState({});
@@ -79,7 +79,7 @@ const NewBook = () => {
         setGlobalError(error.message);
       }
     })();
-  }, [user]);
+  }, [user, setGlobalError]);
 
   useEffect(() => {
     setData(fakeData);
