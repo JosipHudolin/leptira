@@ -102,6 +102,7 @@ const MyBook = () => {
       };
       const bookRef = doc(db, "book", bookId);
       await updateDoc(bookRef, bookFinal);
+      navigate("/");
     } catch (error) {
       setGlobalError(error.message);
     }

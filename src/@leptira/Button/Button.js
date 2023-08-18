@@ -1,16 +1,26 @@
-import React from 'react'
-import { styled } from 'styled-components'
+import React from "react";
+import { styled } from "styled-components";
 
-
-const Button = ({children, margin = "", padding = "", onClick = () => null, ...rest}) => {
+const Button = ({
+  children,
+  margin = "",
+  padding = "",
+  onClick = () => null,
+  ...rest
+}) => {
   return (
-    <StyledButton $margin={margin} $padding={padding} onClick={onClick} {...rest}>
+    <StyledButton
+      $margin={margin}
+      $padding={padding}
+      onClick={onClick}
+      {...rest}
+    >
       {children}
     </StyledButton>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;
 
 const StyledButton = styled.button`
   color: white;
@@ -26,4 +36,4 @@ const StyledButton = styled.button`
     background: none;
     color: dodgerblue;
   }
-`
+`;

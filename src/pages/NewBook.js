@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, InputGroup, Form, Button } from "react-bootstrap";
-import { data as fakeData } from "../data/books";
+// import { data as fakeData } from "../data/books";
 // import { periods } from "../data/periods";
 import { UserContext } from "../contexts/UserContext";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
-import { getGradeBooks, getAllPeriods } from "../server";
+import { getGradeBooks, getAllPeriods, getAllBooks } from "../server";
 
 const NewBook = () => {
   const [data, setData] = useState({});
@@ -59,13 +59,21 @@ const NewBook = () => {
   }, []);
 
   useEffect(() => {
+    (async () => {
+      const data = await getAllBooks();
+      setData(data);
+    })();
+  }, []);
+
+  useEffect(() => {
     if (grade === 0) return;
 
     (async () => {
       const data = await getGradeBooks(grade);
-      setGradeBooks(data)
+      setGradeBooks(data);
+      console.log(data);
     })();
-  }, [grade]);
+  }, [grade, gradeBooks]);
 
   useEffect(() => {
     (async () => {
@@ -80,10 +88,6 @@ const NewBook = () => {
       }
     })();
   }, [user, setGlobalError]);
-
-  useEffect(() => {
-    setData(fakeData);
-  }, []);
 
   const [book, setBook] = useState({});
 
@@ -100,11 +104,12 @@ const NewBook = () => {
         data &&
         data[grade] &&
         data[grade].filter((item) => item.name === book)[0];
+      console.log(filteredData);
+      console.log(data[grade]);
       setBookName(filteredData?.name || "");
       setAuthor(filteredData?.author || "");
     }
   }, [book, data, grade]);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();

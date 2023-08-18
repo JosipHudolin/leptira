@@ -16,11 +16,12 @@ export const getGradeBooks = async (grade) => {
   try {
     const endpoint = "http://localhost:8000/knjige-za-razred";
 
-    const {data} = await axios.get(endpoint, {
+    const { data } = await axios.get(endpoint, {
       params: {
         razred: grade,
       },
     });
+    console.log(data);
 
     return data;
   } catch (error) {
