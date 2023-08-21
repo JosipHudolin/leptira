@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { InputGroup, Form, Container, Button, Alert } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { InputGroup, Form, Container, Alert } from "react-bootstrap";
+import { Button, Logo } from "../@leptira";
+import { useNavigate } from "react-router-dom";
+import { Link } from "../@leptira";
 import { auth } from "../config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import NewPassword from "../components/NewPassword";
@@ -37,13 +39,14 @@ const Login = () => {
   return (
     <Container>
       <NewPassword modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <Logo />
       <Form onSubmit={handleSubmit}>
         {error ? (
           <Alert variant="danger" className="mt-3">
             {error}
           </Alert>
         ) : null}
-        <h1 className="text-center">Login</h1>
+        <h1 className="text-center">Prijava</h1>
 
         <InputGroup className="mb-3">
           <InputGroup.Text id="inputGroup-sizing-default">

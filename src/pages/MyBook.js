@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Container, Form, InputGroup, Button } from "react-bootstrap";
+import { Container, Form, InputGroup } from "react-bootstrap";
+import { Button } from "../@leptira";
 import { UserContext } from "../contexts/UserContext";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../config";
@@ -314,23 +315,11 @@ const MyBook = () => {
           </InputGroup>
         </div>
 
-        <Button
-          className="mt-3 mb-5"
-          variant="primary"
-          type="submit"
-          onClick={handleSave}
-        >
+        <Button margin="5px" onClick={handleSave}>
           Spremi izmjene
         </Button>
 
-        <Button
-          className="mt-3 mb-5"
-          variant="primary"
-          type="submit"
-          onClick={handlePDF}
-        >
-          Izvezi u PDF
-        </Button>
+        <Button onClick={handlePDF}>Izvezi u PDF</Button>
       </Form>
     </Container>
   );

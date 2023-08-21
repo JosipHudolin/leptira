@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, InputGroup, Form, Button } from "react-bootstrap";
-// import { data as fakeData } from "../data/books";
-// import { periods } from "../data/periods";
+import { Container, InputGroup, Form } from "react-bootstrap";
+import { Button } from "../@leptira";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
@@ -10,6 +10,8 @@ import { getGradeBooks, getAllPeriods, getAllBooks } from "../server";
 
 const NewBook = () => {
   const [data, setData] = useState({});
+
+  const navigate = useNavigate();
 
   const [grade, setGrade] = useState(0);
 
@@ -71,7 +73,7 @@ const NewBook = () => {
     (async () => {
       const data = await getGradeBooks(grade);
       setGradeBooks(data);
-      console.log(data);
+      console.log();
     })();
   }, [grade, gradeBooks]);
 
@@ -150,6 +152,7 @@ const NewBook = () => {
       setQuotes("");
       setConclusion("");
       setBook({});
+      navigate("/");
     } catch (error) {
       setGlobalError(error.message);
     }
@@ -157,7 +160,7 @@ const NewBook = () => {
 
   return (
     <Container>
-      <h1 className="mt-5 mb-3">NOVA LEKTIRA</h1>
+      <h1 className="mt-5 mb-3">NOVA LEPTIRA</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Label id="inputGroup-sizing-default">Odaberi razred</Form.Label>
         <Form.Select
@@ -382,5 +385,3 @@ const NewBook = () => {
 };
 
 export default NewBook;
-
-// ne znam stavit knjigu na ostalo nakon submita

@@ -3,9 +3,12 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
 import { auth } from "../config";
+import { GlobalMessageContext } from "../contexts/GlobalMessageContext";
 
 const NewPassword = ({ modalOpen, setModalOpen }) => {
   const { setGlobalError } = useContext(GlobalErrorContext);
+
+  const { setGlobalMessage } = useContext(GlobalMessageContext);
 
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +20,7 @@ const NewPassword = ({ modalOpen, setModalOpen }) => {
       await sendPasswordResetEmail(auth, email);
       setLoading(false);
       setModalOpen(false);
-      // setGlobalMessage("E-mail poslan")
+      setGlobalMessage("E-mail poslan");
     } catch (error) {
       setGlobalError(error.message);
       setLoading(false);
@@ -59,7 +62,3 @@ const NewPassword = ({ modalOpen, setModalOpen }) => {
 };
 
 export default NewPassword;
-
-// Otići u GlobalError i napravit komponentu sličnu njemu al neće bit error neko message
-// Umjesto alert danger stavit alert succes
-// Kontekst global message isto ko globalError i tamo slat poruke npr. lozinka poslana

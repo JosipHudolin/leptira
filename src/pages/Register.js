@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { InputGroup, Form, Container, Button, Alert } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { InputGroup, Form, Container, Alert } from "react-bootstrap";
+import { Button, Link } from "../@leptira";
+import { useNavigate } from "react-router-dom";
 import { data as fakeData } from "../data/books";
 import { auth, db } from "../config";
 import { createUserWithEmailAndPassword } from "firebase/auth";

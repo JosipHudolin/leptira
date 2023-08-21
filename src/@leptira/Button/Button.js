@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from "styled-components";
+import { StyledButton } from "../styles/Button.style";
 
 const Button = ({
   children,
@@ -21,19 +21,3 @@ const Button = ({
 };
 
 export default Button;
-
-const StyledButton = styled.button`
-  color: white;
-  background: dodgerblue;
-  border: 1px solid dodgerblue;
-  border-radius: 5px;
-  padding: 10px 20px;
-  margin: ${(props) => props.$margin};
-  padding: ${(props) => props.$padding};
-  transition: 0.3s;
-
-  &:hover {
-    background: none;
-    color: dodgerblue;
-  }
-`;
