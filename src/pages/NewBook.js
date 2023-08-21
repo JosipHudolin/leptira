@@ -73,7 +73,6 @@ const NewBook = () => {
     (async () => {
       const data = await getGradeBooks(grade);
       setGradeBooks(data);
-      console.log();
     })();
   }, [grade, gradeBooks]);
 
