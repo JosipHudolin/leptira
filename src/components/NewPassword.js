@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { Modal, Button, Form, Spinner } from "react-bootstrap";
+import { Modal, Form, Spinner } from "react-bootstrap";
+import { Button } from "../@leptira";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
 import { auth } from "../config";
@@ -20,7 +21,7 @@ const NewPassword = ({ modalOpen, setModalOpen }) => {
       await sendPasswordResetEmail(auth, email);
       setLoading(false);
       setModalOpen(false);
-      setGlobalMessage("E-mail poslan");
+      setGlobalMessage("E-mail poslan!");
     } catch (error) {
       setGlobalError(error.message);
       setLoading(false);
@@ -30,7 +31,7 @@ const NewPassword = ({ modalOpen, setModalOpen }) => {
   return (
     <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Nova Lozinka</Modal.Title>
+        <Modal.Title>Nova lozinka</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>

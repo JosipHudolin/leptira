@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { InputGroup, Form, Container, Alert } from "react-bootstrap";
 import { Button, Link } from "../@leptira";
 import { useNavigate } from "react-router-dom";
-import { data as fakeData } from "../data/books";
 import { auth, db } from "../config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { getAllBooks } from "../server";
 
 const Register = () => {
   const [data, setData] = useState({});
@@ -13,7 +13,10 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setData(fakeData);
+    (async () => {
+      const data = await getAllBooks();
+      setData(data);
+    })();
   }, []);
 
   const [error, setError] = useState("");

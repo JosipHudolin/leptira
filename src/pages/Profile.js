@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Card, InputGroup, Form, Button } from "react-bootstrap";
-import { data as fakeData } from "../data/books";
+import { Container, Card, InputGroup, Form } from "react-bootstrap";
+import { Button } from "../@leptira";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../config";
 import { UserContext } from "../contexts/UserContext";
 import { getAuth, updateEmail } from "firebase/auth";
 import { GlobalErrorContext } from "../contexts/GlobarErrorContext";
+import { getAllBooks } from "../server";
 
 const Profile = () => {
   const { setGlobalError } = useContext(GlobalErrorContext);
@@ -68,7 +69,10 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    setData(fakeData);
+    (async () => {
+      const data = await getAllBooks();
+      setData(data);
+    })();
   }, []);
 
   return (

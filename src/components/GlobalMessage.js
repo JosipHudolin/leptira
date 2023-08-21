@@ -7,7 +7,7 @@ const GlobalMessage = () => {
 
   return globalMessage ? (
     <Container>
-      <Alert variant="succes" className="mt-3">
+      <Alert variant="success" className="mt-3">
         {globalMessage}
       </Alert>
     </Container>

@@ -66,7 +66,7 @@ const Login = () => {
           <Form.Control
             type="password"
             required
-            placeholder="Password"
+            placeholder="Lozinka"
             aria-label="Password"
             aria-describedby="basic-addon1"
             onChange={(e) => setPassword(e.target.value)}

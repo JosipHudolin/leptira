@@ -11,26 +11,29 @@ import ErrorProvider from "./contexts/GlobarErrorContext";
 import GlobalError from "./components/GlobalError";
 import Redirect from "./components/Redirect";
 import MyBook from "./pages/MyBook";
+import MessageProvider from "./contexts/GlobalMessageContext";
 
 const App = () => {
   return (
     <UserProvider>
       <ErrorProvider>
-        <BrowserRouter>
-          <GlobalStyle />
-          <Navbar />
-          <GlobalError />
-          <Redirect disabled>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/newbook" element={<NewBook />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/mybook/:bookId" element={<MyBook />} />
-            </Routes>
-          </Redirect>
-        </BrowserRouter>
+        <MessageProvider>
+          <BrowserRouter>
+            <GlobalStyle />
+            <Navbar />
+            <GlobalError />
+            <Redirect disabled>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/newbook" element={<NewBook />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/mybook/:bookId" element={<MyBook />} />
+              </Routes>
+            </Redirect>
+          </BrowserRouter>
+        </MessageProvider>
       </ErrorProvider>
     </UserProvider>
   );
