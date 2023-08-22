@@ -5,7 +5,6 @@ export const getAllBooks = async () => {
     const endpoint = "http://localhost:8000/sve-knjige";
 
     const { data } = await axios.get(endpoint);
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -21,7 +20,6 @@ export const getGradeBooks = async (grade) => {
         razred: grade,
       },
     });
-    console.log(data);
 
     return data;
   } catch (error) {

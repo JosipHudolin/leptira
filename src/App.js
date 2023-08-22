@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
+import { StyleSheetManager, createGlobalStyle } from "styled-components";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewBook from "./pages/NewBook";
@@ -12,30 +12,33 @@ import GlobalError from "./components/GlobalError";
 import Redirect from "./components/Redirect";
 import MyBook from "./pages/MyBook";
 import MessageProvider from "./contexts/GlobalMessageContext";
+import isPropValid from '@emotion/is-prop-valid'
 
 const App = () => {
   return (
-    <UserProvider>
-      <ErrorProvider>
-        <MessageProvider>
-          <BrowserRouter>
-            <GlobalStyle />
-            <Navbar />
-            <GlobalError />
-            <Redirect disabled>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/newbook" element={<NewBook />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/mybook/:bookId" element={<MyBook />} />
-              </Routes>
-            </Redirect>
-          </BrowserRouter>
-        </MessageProvider>
-      </ErrorProvider>
-    </UserProvider>
+    <StyleSheetManager shouldForwardProp={isPropValid}>
+      <UserProvider>
+        <ErrorProvider>
+          <MessageProvider>
+            <BrowserRouter>
+              <GlobalStyle />
+              <Navbar />
+              <GlobalError />
+              <Redirect disabled>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/newbook" element={<NewBook />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/mybook/:bookId" element={<MyBook />} />
+                </Routes>
+              </Redirect>
+            </BrowserRouter>
+          </MessageProvider>
+        </ErrorProvider>
+      </UserProvider>
+    </StyleSheetManager>
   );
 };
 

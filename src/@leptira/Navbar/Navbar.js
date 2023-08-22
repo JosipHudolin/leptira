@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { DocumentSnapshot, doc, getDoc } from "firebase/firestore";
+import {  doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../../config";
 import { GlobalErrorContext } from "../../contexts/GlobarErrorContext";
 import { signOut } from "firebase/auth";
@@ -41,6 +41,8 @@ const Navbar = () => {
   }, [user]);
 
   const handleLogOut = async () => {
+    setExtendNavbar(false);
+
     try {
       await signOut(auth);
       navigate("/login");
@@ -50,7 +52,7 @@ const Navbar = () => {
   };
 
   return (
-    <NavbarContainer extendNavbar={extendNavbar}>
+    <NavbarContainer $extendNavbar={extendNavbar}>
       <NavbarInnerContainer>
         <LeftContainer>
           <NavbarLinkContainer>
@@ -58,13 +60,17 @@ const Navbar = () => {
             {user ? (
               <NavbarLink to="/newbook">Pročitaj LEPTIRU</NavbarLink>
             ) : null}
-            <OpenLinksButton
-              onClick={() => {
-                setExtendNavbar((curr) => !curr);
-              }}
-            >
-              {extendNavbar ? <>&#10005;</> : <>&#8801;</>}
-            </OpenLinksButton>
+            {
+              user ?
+                <OpenLinksButton
+                  onClick={() => {
+                    setExtendNavbar((curr) => !curr);
+                  }}
+                >
+                  {extendNavbar ? <>&#10005;</> : <>&#8801;</>}
+                </OpenLinksButton>
+              : null
+            }
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
@@ -80,15 +86,15 @@ const Navbar = () => {
       {extendNavbar && (
         <NavbarExtendedContainer>
           {user ? (
-            <NavbarLinkExtended to="/">Naslovnica</NavbarLinkExtended>
+            <NavbarLinkExtended to="/" onClick={() => setExtendNavbar(false)}>Naslovnica</NavbarLinkExtended>
           ) : null}
           {user ? (
-            <NavbarLinkExtended to="/newbook">
+            <NavbarLinkExtended to="/newbook" onClick={() => setExtendNavbar(false)}>
               Pročitaj LEPTIRU
             </NavbarLinkExtended>
           ) : null}
           {user ? (
-            <NavbarLinkExtended to="/profile">Moj profil</NavbarLinkExtended>
+            <NavbarLinkExtended to="/profile" onClick={() => setExtendNavbar(false)}>Moj profil</NavbarLinkExtended>
           ) : null}
           {user ? (
             <NavbarLinkExtended onClick={handleLogOut}>
