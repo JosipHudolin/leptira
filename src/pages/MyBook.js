@@ -51,8 +51,12 @@ const MyBook = () => {
   const { setGlobalError } = useContext(GlobalErrorContext);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     (async () => {
-      if (!user) return;
       try {
         const bookRef = doc(db, "book", bookId);
         const bookSnap = await getDoc(bookRef);
@@ -113,7 +117,6 @@ const MyBook = () => {
     e.preventDefault();
     const canvas = await html2canvas(ref.current);
     const image = canvas.toDataURL("image/png");
-    console.log(image);
 
     const pdf = new jsPDF({
       orientation: "p",
@@ -128,199 +131,205 @@ const MyBook = () => {
 
   return (
     <Container>
-      <h1 className="mt-5 mb-3">{bookName}</h1>
-      <Form>
-        <div ref={ref}>
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Naslov djela
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Naslov djela"
-              aria-describedby="inputGroup-sizing-default"
-              value={bookName}
-              onChange={(e) => setBookName(e.target.value)}
-            />
-          </InputGroup>
+      {
+        user ?
+        <>
+          <h1 className="mt-5 mb-3">{bookName}</h1>
+          <Form>
+            <div ref={ref}>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Naslov djela
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Naslov djela"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={bookName}
+                  onChange={(e) => setBookName(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Ime autora
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Ime autora"
-              aria-describedby="inputGroup-sizing-default"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Ime autora
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Ime autora"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                />
+              </InputGroup>
 
-          <Form.Label id="inputGroup-sizing-default">
-            Bilješke o piscu
-          </Form.Label>
-          <InputGroup className="mb-3">
-            <Form.Control
-              as="textarea"
-              rows="4"
-              aria-label="AuthorNote"
-              aria-describedby="inputGroup-sizing-default"
-              value={authorNote}
-              onChange={(e) => setAuthorNote(e.target.value)}
-            />
-          </InputGroup>
+              <Form.Label id="inputGroup-sizing-default">
+                Bilješke o piscu
+              </Form.Label>
+              <InputGroup className="mb-3">
+                <Form.Control
+                  as="textarea"
+                  rows="4"
+                  aria-label="AuthorNote"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={authorNote}
+                  onChange={(e) => setAuthorNote(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Godina izdanja
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Godina izdanja"
-              aria-describedby="inputGroup-sizing-default"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Godina izdanja
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Godina izdanja"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                />
+              </InputGroup>
 
-          <Form.Select
-            className="mb-3"
-            aria-label="Default select example"
-            onChange={(e) => setPeriod(e.target.value)}
-          >
-            <option>Odaberi književno-povijesno razdoblje</option>
-            {periods.map((item) => (
-              <option value={item} key={item}>
-                {item}
-              </option>
-            ))}
-          </Form.Select>
+              <Form.Select
+                className="mb-3"
+                aria-label="Default select example"
+                onChange={(e) => setPeriod(e.target.value)}
+              >
+                <option>Odaberi književno-povijesno razdoblje</option>
+                {periods.map((item) => (
+                  <option value={item} key={item}>
+                    {item}
+                  </option>
+                ))}
+              </Form.Select>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Izvorni jezik
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Izvorni jezik"
-              aria-describedby="inputGroup-sizing-default"
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Izvorni jezik
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Izvorni jezik"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Glavni lik
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Glavni likovi"
-              aria-describedby="inputGroup-sizing-default"
-              value={mainCharacter}
-              onChange={(e) => setMainCharacter(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Glavni lik
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Glavni likovi"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={mainCharacter}
+                  onChange={(e) => setMainCharacter(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Sporedni likovi
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Sporedni likovi"
-              aria-describedby="inputGroup-sizing-default"
-              value={characters}
-              onChange={(e) => setCharacters(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Sporedni likovi
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Sporedni likovi"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={characters}
+                  onChange={(e) => setCharacters(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Mjesto radnje
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Mjesto radnje"
-              aria-describedby="inputGroup-sizing-default"
-              value={place}
-              onChange={(e) => setPlace(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Mjesto radnje
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Mjesto radnje"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={place}
+                  onChange={(e) => setPlace(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Vrijeme radnje
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Vrijeme radnje"
-              aria-describedby="inputGroup-sizing-default"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Vrijeme radnje
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Vrijeme radnje"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Tema djela
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Tema djela"
-              aria-describedby="inputGroup-sizing-default"
-              value={theme}
-              onChange={(e) => setTheme(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Tema djela
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Tema djela"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value)}
+                />
+              </InputGroup>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-default">
-              Ideja djela
-            </InputGroup.Text>
-            <Form.Control
-              aria-label="Ideja djela"
-              aria-describedby="inputGroup-sizing-default"
-              value={idea}
-              onChange={(e) => setIdea(e.target.value)}
-            />
-          </InputGroup>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Ideja djela
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Ideja djela"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={idea}
+                  onChange={(e) => setIdea(e.target.value)}
+                />
+              </InputGroup>
 
-          <Form.Label id="inputGroup-sizing-default">Kratak sadržaj</Form.Label>
-          <InputGroup className="mb-3">
-            <Form.Control
-              as="textarea"
-              rows="6"
-              aria-label="Kratak sadržaj"
-              aria-describedby="inputGroup-sizing-default"
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-            />
-          </InputGroup>
+              <Form.Label id="inputGroup-sizing-default">Kratak sadržaj</Form.Label>
+              <InputGroup className="mb-3">
+                <Form.Control
+                  as="textarea"
+                  rows="6"
+                  aria-label="Kratak sadržaj"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={summary}
+                  onChange={(e) => setSummary(e.target.value)}
+                />
+              </InputGroup>
 
-          <Form.Label id="inputGroup-sizing-default">Citati</Form.Label>
-          <InputGroup className="mb-3">
-            <Form.Control
-              as="textarea"
-              rows="4"
-              aria-label="Citati"
-              aria-describedby="inputGroup-sizing-default"
-              value={quotes}
-              onChange={(e) => setQuotes(e.target.value)}
-            />
-          </InputGroup>
+              <Form.Label id="inputGroup-sizing-default">Citati</Form.Label>
+              <InputGroup className="mb-3">
+                <Form.Control
+                  as="textarea"
+                  rows="4"
+                  aria-label="Citati"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={quotes}
+                  onChange={(e) => setQuotes(e.target.value)}
+                />
+              </InputGroup>
 
-          <Form.Label id="inputGroup-sizing-default">Zaključak</Form.Label>
-          <InputGroup className="mb-3">
-            <Form.Control
-              as="textarea"
-              rows="4"
-              aria-label="Zaključak"
-              aria-describedby="inputGroup-sizing-default"
-              value={conclusion}
-              onChange={(e) => setConclusion(e.target.value)}
-            />
-          </InputGroup>
-        </div>
+              <Form.Label id="inputGroup-sizing-default">Zaključak</Form.Label>
+              <InputGroup className="mb-3">
+                <Form.Control
+                  as="textarea"
+                  rows="4"
+                  aria-label="Zaključak"
+                  aria-describedby="inputGroup-sizing-default"
+                  value={conclusion}
+                  onChange={(e) => setConclusion(e.target.value)}
+                />
+              </InputGroup>
+            </div>
 
-        <Button margin="5px" onClick={handleSave}>
-          Spremi izmjene
-        </Button>
+            <Button margin="5px" onClick={handleSave}>
+              Spremi izmjene
+            </Button>
 
-        <Button onClick={handlePDF}>Izvezi u PDF</Button>
-      </Form>
+            <Button onClick={handlePDF}>Izvezi u PDF</Button>
+          </Form>
+        </>
+        : null
+      }
     </Container>
   );
 };
